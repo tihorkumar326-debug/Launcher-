@@ -10,7 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: unzip -q SmoothLauncher*.zip
+        with:
+          fetch-depth: 0
+      - name: Unzip newest zip
+        run: |
+          Z=$(git log --name-only --format= --diff-filter=AM -- '*.zip' | head -1)
+          echo "Using: $Z"
+          unzip -qo "$Z"
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
